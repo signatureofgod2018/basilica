@@ -1,7 +1,7 @@
 # AI Board Room — AI Workspace Handoff
 **Project:** AI Board Room (Chat Tracker)
 **Repo:** https://github.com/signatureofgod2018/ai-board-room
-**Last Updated:** 2026-03-24
+**Last Updated:** 2026-03-24 18:45 CST
 **Updated By:** Oscar-Romero-CC (Claude Sonnet 4.6 — Claude Code instance)
 
 ---
@@ -60,6 +60,14 @@ OpenClaw is the full OS layer: it proxies messages, coordinates agents, AND runs
 | 9 | Dashboard scaffold | React + Vite stub |
 | 10 | Docker Compose | PostgreSQL + Qdrant, one command: `docker compose up -d` |
 | 11 | `ai-workspace/handoff.md` | This file — AI onboarding + Kanban board |
+| 12 | `.gitignore` fixed | Excluded `.claude/` and `.env.prod`; removed from git tracking |
+| 13 | CI/CD pipeline | `.github/workflows/ci.yml` — build, test, publish Docker images to ghcr.io on push to main |
+| 14 | `docker-compose.prod.yml` | Production compose for ST-GABRIEL (pulls from ghcr.io) |
+| 15 | `scripts/deploy.sh` | Dev laptop → ST-GABRIEL deploy via SSH + LAN. Usage: `./scripts/deploy.sh` |
+| 16 | `scripts/sync-data.sh` | Data sync Dev→Prod (default) or Prod→Dev (`--reverse` flag). Syncs PostgreSQL tables + Qdrant snapshots in-toto. `--dry-run` supported. |
+| 17 | `packages/openclaw/Dockerfile` | Multi-stage Docker build for OpenClaw service |
+| 18 | `packages/dashboard/Dockerfile` | Multi-stage Docker build for dashboard (React → nginx) |
+| 19 | `.env.prod.example` | Production env var template for ST-GABRIEL |
 
 ---
 
@@ -67,7 +75,7 @@ OpenClaw is the full OS layer: it proxies messages, coordinates agents, AND runs
 
 | # | Item | Owner | Notes |
 |---|---|---|---|
-| 12 | Fix `.gitignore` | Oscar-Romero-CC | Exclude `.claude/` folder — accidentally committed in scaffolding push |
+| — | — | — | — |
 
 ---
 

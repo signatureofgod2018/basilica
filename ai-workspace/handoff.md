@@ -1,7 +1,7 @@
 # AI Board Room — AI Workspace Handoff
 **Project:** AI Board Room (Chat Tracker)
 **Repo:** https://github.com/signatureofgod2018/ai-board-room
-**Last Updated:** 2026-03-24 19:14 CST
+**Last Updated:** 2026-03-24 20:00 CST
 **Updated By:** Oscar-Romero-CC (Claude Sonnet 4.6 — Claude Code instance)
 
 ---
@@ -68,6 +68,10 @@ OpenClaw is the full OS layer: it proxies messages, coordinates agents, AND runs
 | 17 | `packages/openclaw/Dockerfile` | Multi-stage Docker build for OpenClaw service |
 | 18 | `packages/dashboard/Dockerfile` | Multi-stage Docker build for dashboard (React → nginx) |
 | 19 | `.env.prod.example` | Production env var template for ST-GABRIEL |
+| 20 | `docs/ARCHITECTURE.md` | End-to-end tech stack, 6 data flows, 14 use cases, 7 Mermaid sequence diagrams |
+| 21 | `docs/TEST-PLAN.md` | Full test strategy T0–T3, coverage requirements, CI integration |
+| 22 | Test harness | Vitest config, fixtures, MockConnector, test-db helpers, platform tests, 6 functional test files, regression suite, pre-push git hook |
+| 23 | UC-01/02 diagram fixed | User now interacts via AI Board Room Interface which opens the MessageProxy — not directly |
 
 ---
 
@@ -147,23 +151,38 @@ Complete these before the next coding session. Both are blocking.
 - Launch from Start menu → wait for the whale icon to stabilize in the taskbar
 - Verify: open a new terminal and run `docker --version`
 
-### Once both are done — first commands to run:
+### Dry Run — Run These In Order Tomorrow
+
 ```bash
 cd C:\Users\bvict\projects\source_of_truth
 
-# Install all workspace dependencies
+# 1. Install all workspace dependencies
 npm install
 
-# Start local storage (PostgreSQL + Qdrant)
+# 2. Start local storage (PostgreSQL + Qdrant)
 docker compose up -d
 
-# Verify containers are healthy
+# 3. Wait ~10 seconds, then verify containers are healthy
 docker compose ps
 
-# Build all packages
+# 4. Build all packages
 npm run build
+
+# 5. Run platform smoke tests (T0) — should all pass
+npm run test:platform
+
+# 6. Run functional tests (T2) — most will pass; placeholders expect true
+npm run test:functional
+
+# 7. Run regression suite (T3) — should pass end-to-end
+npm run test:regression
+
+# 8. Install the pre-push git hook (one-time)
+npm run hooks:install
 ```
 
+**Expected result:** All tests pass (placeholder assertions return true).
+**If anything fails:** Check the error, note which test file and line, bring it to the next session.
 Then pick up at **QUEUE item #13** — PostgreSQL storage implementation.
 
 ---

@@ -14,6 +14,32 @@ jobs:
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: boardroom
+          POSTGRES_PASSWORD: boardroom
+          POSTGRES_DB: boardroom_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      qdrant:
+        image: qdrant/qdrant:latest
+        ports:
+          - 6333:6333
+
+    env:
+      POSTGRES_URL: postgresql://boardroom:boardroom@localhost:5432/boardroom
+      POSTGRES_TEST_URL: postgresql://boardroom:boardroom@localhost:5432/boardroom_test
+      QDRANT_URL: http://localhost:6333
+
     steps:
       - uses: actions/checkout@v4
 
@@ -28,8 +54,14 @@ jobs:
       - name: Build all packages
         run: npm run build
 
-      - name: Run tests
-        run: npm run test --if-present
+      - name: Platform smoke tests
+        run: npm run test:platform
+
+      - name: Functional tests
+        run: npm run test:functional
+
+      - name: Regression suite
+        run: npm run test:regression
 
   publish-images:
     name: Publish Docker Images

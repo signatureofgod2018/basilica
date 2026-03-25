@@ -9,8 +9,19 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "dev": "npm run dev --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:platform": "vitest run tests/platform",
+    "test:functional": "vitest run tests/functional",
+    "test:regression": "vitest run tests/regression",
+    "test:coverage": "vitest run --coverage",
+    "lint": "npm run lint --workspaces --if-present",
+    "hooks:install": "bash scripts/setup-git-hooks.sh"
+  },
+  "devDependencies": {
+    "vitest": "^1.6.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "typescript": "^5.4.0"
   },
   "engines": {
     "node": ">=20.0.0"
